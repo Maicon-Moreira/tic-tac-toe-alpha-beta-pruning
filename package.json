@@ -1,0 +1,20 @@
+{
+  "name": "tic-tac-toe-alpha-beta-pruning",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maicon-Moreira/tic-tac-toe-alpha-beta-pruning.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Maicon-Moreira/tic-tac-toe-alpha-beta-pruning/issues"
+  },
+  "homepage": "https://github.com/Maicon-Moreira/tic-tac-toe-alpha-beta-pruning#readme"
+}
