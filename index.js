@@ -1,92 +1,80 @@
 const ws = 400
+const workers = []
+const barHeight = 10
 let sequenceToWin = 4
 let gridSize = 5
 let initialDepth = 6
-let players = [TICFISH, 'VS', HUMAN] // O VS X
+let players = [HUMAN, 'VS', TICFISH] // O VS X
 let currentPlayer = 1 // X
 let quadSize = ws / gridSize
 let grid = newGrid(gridSize)
 let calculations = 0
 let pruning = 0
-// let terminalNodes = [0, 0, 0]
+let scoresRequired = true
+let scoresToBeCalculated = Infinity
+let scoresCalculated = []
+let showHints = true
 
 
 function setup() {
-  createCanvas(ws, ws)
+  createCanvas(ws, ws + barHeight)
+  frameRate(15)
+  textAlign(CENTER, CENTER)
+
+  for (let i = 0; i < gridSize ** 2; i++) {
+    const worker = new Worker('./alphabetaWorker.js')
+
+    worker.onmessage = e => {
+      console.log(e.data)
+      scoresCalculated.push(e.data)
+      TICFISH()
+    }
+
+    workers[i] = worker
+  }
 }
 
 function draw() {
-  drawGrid(grid)
+  if (scoresRequired) requireScores()
 
   players[currentPlayer + 1]()
 
-  console.log(checkWinner(grid))
+  drawGrid(grid)
+  drawCalculationBar()
+  // drawHints()
 }
 
 
 function TICFISH() {
-  const scores = []
-
   // X -> 1
-  if (currentPlayer == 1) {
-    const moves = createMoves(grid, 1)
+  if (currentPlayer == 1 &&
+    scoresCalculated.length === scoresToBeCalculated) {
 
-    for (let move of moves) {
-      const score = alphabeta(move, initialDepth - 1, -Infinity, Infinity, false)
-      scores.push(score)
+    const bestMoves = maxBestScores()
 
-      console.logGrid(move)
-      console.log('score ' + score)
-      console.log(calculations + ' cenários futuros')
-      console.log(pruning + ' podas')
-      console.log('------------------------------------')
+    const selected = randomItem(bestMoves)
 
-      calculations = 0
-      pruning = 0
-    }
+    grid = selected.grid
 
-    const [indexes, maxNumber] = maxNumberIndexes(scores)
-    const selected = randomItem(indexes)
-
-    grid = moves[selected]
-
-    console.log(scores)
-
-    console.log(terminalNodes)
-    terminalNodes = [0, 0, 0]
+    console.log(bestMoves)
 
     changePlayer()
+
   }
 
   // O -> -1
-  else {
-    const moves = createMoves(grid, -1)
+  else if (scoresCalculated.length === scoresToBeCalculated) {
 
-    for (let move of moves) {
-      const score = alphabeta(move, initialDepth - 1, -Infinity, Infinity, true)
-      scores.push(score)
+    const bestMoves = minBestScores()
 
-      console.logGrid(move)
-      console.log('score ' + score)
-      console.log(calculations + ' cenários futuros')
-      console.log(pruning + ' podas')
-      console.log('------------------------------------')
+    const selected = randomItem(bestMoves)
 
-      calculations = 0
-      pruning = 0
-    }
+    grid = selected.grid
 
-    const [indexes, minNumber] = minNumberIndexes(scores)
-    const selected = randomItem(indexes)
-
-    grid = moves[selected]
-
-    console.log(scores)
-
-    console.log(terminalNodes)
-    terminalNodes = [0, 0, 0]
+    console.log(bestMoves)
 
     changePlayer()
+
   }
 }
 
@@ -100,4 +88,90 @@ function HUMAN() {
       changePlayer()
     }
   }
+}
+
+function requireScores() {
+  scoresCalculated = []
+
+  // X -> 1
+  if (currentPlayer == 1) {
+    const moves = createMoves(grid, 1)
+    scoresToBeCalculated = moves.length
+
+    for (let i in moves) {
+      const worker = workers[i]
+      const move = moves[i]
+
+
+      worker.postMessage({
+        node: move,
+        depth: initialDepth,
+        maximizing: false,
+        gridSize,
+        sequenceToWin
+      })
+
+
+      console.log('posted')
+    }
+  }
+
+  // O -> -1
+  else {
+    const moves = createMoves(grid, -1)
+    scoresToBeCalculated = moves.length
+
+    for (let i in moves) {
+      const worker = workers[i]
+      const move = moves[i]
+
+
+      worker.postMessage({
+        node: move,
+        depth: initialDepth,
+        maximizing: true,
+        gridSize,
+        sequenceToWin
+      })
+
+
+      console.log('posted')
+    }
+  }
+
+  scoresRequired = false
+}
+
+function minBestScores() {
+  let minScore = Infinity
+  let bestOnes = []
+
+  for (calculation of scoresCalculated) {
+    if (calculation.result === minScore)
+      bestOnes.push(calculation)
+
+    else if (calculation.result < minScore) {
+      minScore = calculation.result
+      bestOnes = [calculation]
+    }
+  }
+
+  return bestOnes
+}
+
+function maxBestScores() {
+  let maxScore = -Infinity
+  let bestOnes = []
+
+  for (calculation of scoresCalculated) {
+    if (calculation.result === maxScore)
+      bestOnes.push(calculation)
+
+    else if (calculation.result > maxScore) {
+      maxScore = calculation.result
+      bestOnes = [calculation]
+    }
+  }
+
+  return bestOnes
 }

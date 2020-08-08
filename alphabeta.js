@@ -119,18 +119,15 @@ function heuristic(g) {
     }
   }
 
-  // console.log(value)
   return value
 }
 
 
 
 function alphabeta(node, depth, alpha, beta, maximizing) {
-  // console.logGrid(node, initialDepth - depth)
   calculations++
 
   const winner = checkWinner(node)
-  terminalNodes[winner + 1]++
   if (depth === 0 || winner !== 0) {
     return heuristic(node)
   }

@@ -21,13 +21,13 @@ function randomNewGrid(size) {
 }
 
 function drawGrid(grid) {
-  background(50, 100, 200)
+  background(0)
 
   noFill()
 
   for (let x = 0; x < gridSize; x++) {
 
-    stroke(0)
+    stroke(150)
     strokeWeight(2)
 
     line(x * quadSize, 0, x * quadSize, ws)
@@ -146,4 +146,22 @@ function randomItem(array) {
 
 function changePlayer() {
   currentPlayer = currentPlayer == 1 ? -1 : 1
+
+  scoresRequired = true
+}
+
+function drawCalculationBar() {
+  noStroke()
+  if (currentPlayer === 1) fill(0, 255, 0)
+  else fill(255, 0, 0)
+
+  rect(0, ws, ws * scoresCalculated.length / scoresToBeCalculated, barHeight)
+}
+
+function drawHints() {
+  if (showHints) {
+    for (calculation of scoresCalculated){
+
+    }
+  }
 }
