@@ -3,7 +3,7 @@ const workers = []
 const barHeight = 10
 let sequenceToWin = 4
 let gridSize = 5
-let initialDepth = 4
+let initialDepth = 6
 let players = [HUMAN, 'VS', TICFISH] // O VS X
 let currentPlayer = 1 // X
 let quadSize = ws / gridSize
@@ -20,16 +20,7 @@ function setup() {
   textAlign(CENTER, CENTER)
   textSize(quadSize * 0.3)
 
-  for (let i = 0; i < gridSize ** 2; i++) {
-    const worker = new Worker('./src/alphabetaWorker.js')
-
-    worker.onmessage = e => {
-      console.log(e.data)
-      scoresCalculated.push(e.data)
-    }
-
-    workers[i] = worker
-  }
+  createWorkers()
 }
 
 function draw() {
