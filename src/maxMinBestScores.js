@@ -12,7 +12,7 @@ function minBestScores() {
     }
   }
 
-  return bestOnes
+  return [bestOnes, minScore]
 }
 
 function maxBestScores() {
@@ -29,5 +29,5 @@ function maxBestScores() {
     }
   }
 
-  return bestOnes
+  return [bestOnes, maxScore]
 }

@@ -1,4 +1,4 @@
-const ws = innerHeight > innerWidth ? innerWidth * 0.9 : innerHeight * 0.9
+const ws = innerHeight > innerWidth ? innerWidth * 0.9 : innerHeight * 0.5
 const gridSize = 5
 const sequenceToWin = 4
 const workers = []
@@ -15,6 +15,8 @@ let scoresCalculated = []
 let showHints = false
 let startedCalculateScores
 let finishedCalculateScores
+let scoreSelected
+let winner
 
 function preload() {
   fontRegular = loadFont('./fonts/BalooTamma2-Regular.ttf');
@@ -39,7 +41,8 @@ function setup() {
 function draw() {
   if (scoresRequired) requireScores()
 
-  players[currentPlayer + 1]()
+  if (winner === null)
+    players[currentPlayer + 1]()
 
   drawGrid(grid)
   drawCalculationBar()

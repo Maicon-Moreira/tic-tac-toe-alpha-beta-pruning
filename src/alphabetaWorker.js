@@ -5,8 +5,6 @@ onmessage = function (e) {
   let calculations = 0
   let pruning = 0
 
-  console.log(searchOrder)
-
   function max(a, b) {
     if (a > b) return a
     else return b

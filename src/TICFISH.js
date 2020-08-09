@@ -4,7 +4,8 @@ function TICFISH() {
     players[currentPlayer + 1] === TICFISH &&
     scoresCalculated.length === scoresToBeCalculated) {
 
-    const bestMoves = maxBestScores()
+    const [bestMoves, maxScore] = maxBestScores()
+    scoreSelected = maxScore
 
     const selected = randomItem(bestMoves)
 
@@ -19,7 +20,8 @@ function TICFISH() {
   else if (players[currentPlayer + 1] === TICFISH &&
     scoresCalculated.length === scoresToBeCalculated) {
 
-    const bestMoves = minBestScores()
+    const [bestMoves, minScore] = minBestScores()
+    scoreSelected = minScore
 
     const selected = randomItem(bestMoves)
 

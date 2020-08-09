@@ -16,13 +16,38 @@
 </head>
 
 <body>
-  <h1>Tic Tac Toe 5x5</h1>
-  <h3>Por <a href="https://www.linkedin.com/in/maicon-moreira-38ab691a4/"></a></h3>
+  <h1>Tic Tac Toe 5x5 IA</h1>
+  <h3>Por <a target="blank" href="https://www.linkedin.com/in/maicon-moreira-38ab691a4/">Maicon Moreira</a></h3>
+  <h4>Método α β pruning, <a target="blank"
+      href="https://github.com/Maicon-Moreira/tic-tac-toe-alpha-beta-pruning">entenda como funciona</a></h4>
+
+  <div class="hud">
+    <div class="players">
+      <select id='1'>
+        <option value="HUMAN">Humano</option>
+        <option value="TICFISH">TicFish</option>
+      </select>
+      <p>VS</p>
+      <select id='2'>
+        <option value="HUMAN">Humano</option>
+        <option value="TICFISH">TicFish</option>
+      </select>
+    </div>
+    <div class="buttons">
+      <button id="restart">Reiniciar</button>
+      <div class="space"></div>
+      <button id="hints">Ativar dicas</button>
+    </div>
+    <div id="status">Empatado</div>
+  </div>
+
 
   <script src="./src/draw/drawCalculationBar.js"></script>
   <script src="./src/draw/drawGrid.js"></script>
   <script src="./src/draw/drawHints.js"></script>
+  <script src="./src/draw/updateHud.js"></script>
   <script src="./src/changePlayer.js"></script>
+  <script src="./src/checkWinner.js"></script>
   <script src="./src/copyGrid.js"></script>
   <script src="./src/createMoves.js"></script>
   <script src="./src/createSearchOrder.js"></script>
@@ -38,9 +63,6 @@
 
   <script src="./index.js"></script>
 
-  <div class="hud">
-    <h2>Pode empatar</h2>
-  </div>
 </body>
 
 </html>
