@@ -16,10 +16,12 @@ onmessage = function (e) {
   }
 
   function checkWinner(g) {
+    let counter = 0
     for (let x = 0; x < gridSize; x++) {
       for (let y = 0; y < gridSize; y++) {
         const player = g[x][y]
         if (player !== 0) {
+          counter++
 
           // horizontal
           for (let distance = 1; distance < sequenceToWin; distance++) {
@@ -61,7 +63,12 @@ onmessage = function (e) {
       }
     }
 
-    return 0
+    if (counter === gridSize ** 2) {
+      return 0
+    }
+    else {
+      return null
+    }
   }
 
   function heuristic(g) {
@@ -144,7 +151,7 @@ onmessage = function (e) {
     // if (winner !== 0) {
     //   return winner * 10000
     // }
-    if (depth === 0 || winner !== 0) {
+    if (depth === 0 || winner !== null) {
       return heuristic(node)
     }
 
@@ -196,7 +203,6 @@ onmessage = function (e) {
           }
         }
       }
-
 
       return minValue
     }

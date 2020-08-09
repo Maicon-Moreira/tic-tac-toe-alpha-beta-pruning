@@ -19,8 +19,6 @@ function requireScores() {
         sequenceToWin,
         searchOrder
       })
-
-      console.log('posted')
     }
   }
 
@@ -41,8 +39,6 @@ function requireScores() {
         sequenceToWin,
         searchOrder
       })
-
-      console.log('posted')
     }
   }
 

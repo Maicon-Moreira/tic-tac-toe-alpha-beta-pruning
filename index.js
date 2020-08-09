@@ -1,8 +1,8 @@
 const ws = innerHeight > innerWidth ? innerWidth * 0.9 : innerHeight * 0.5
 const gridSize = 5
 const sequenceToWin = 4
-const workers = []
 const barHeight = 10
+let workers = []
 let searchOrder = []
 let initialDepth = 7
 let players = [HUMAN, 'VS', TICFISH] // O VS X
@@ -44,10 +44,10 @@ function draw() {
   if (winner === null)
     players[currentPlayer + 1]()
 
+  background(0)
+
   drawGrid(grid)
   drawCalculationBar()
   drawHints()
   updateHud()
-
-  console.log(finishedCalculateScores - startedCalculateScores)
 }

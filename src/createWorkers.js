@@ -3,7 +3,7 @@ function createWorkers() {
     const worker = new Worker('./src/alphabetaWorker.js')
 
     worker.onmessage = e => {
-      console.log(e.data)
+      // console.log(e.data)
       scoresCalculated.push(e.data)
       finishedCalculateScores = new Date()
     }

@@ -1,6 +1,4 @@
 function drawGrid(grid) {
-  background(0)
-
   noFill()
 
   for (let x = 0; x < gridSize; x++) {

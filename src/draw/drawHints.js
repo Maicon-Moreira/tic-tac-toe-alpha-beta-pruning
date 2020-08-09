@@ -3,6 +3,7 @@ function drawHints() {
 
     let minResult = Infinity
     let maxResult = -Infinity
+
     for (const calculation of scoresCalculated) {
       if (calculation.result > maxResult) maxResult = calculation.result
       if (calculation.result < minResult) minResult = calculation.result
@@ -20,8 +21,10 @@ function drawHints() {
       for (let x = 0; x < gridSize; x++) {
         for (let y = 0; y < gridSize; y++) {
           if (grid[x][y] !== newGrid[x][y]) {
-            if (calculation.result === Infinity) calculation.result = '∞'
+
+            if (abs(calculation.result) === Infinity) calculation.result = '∞'
             text(calculation.result, x * quadSize + quadSize / 2, y * quadSize + quadSize / 2)
+
           }
         }
       }

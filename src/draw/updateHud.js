@@ -11,7 +11,7 @@ player1.onchange = e => {
 
   if (players[2] !== value) {
     players[2] = value
-    restarGame()
+    restartGame()
   }
 }
 
@@ -20,11 +20,11 @@ player2.onchange = e => {
 
   if (players[0] !== value) {
     players[0] = value
-    restarGame()
+    restartGame()
   }
 }
 
-restart.onclick = restarGame
+restart.onclick = () => restartGame()
 
 hints.onclick = () => showHints = !showHints
 
@@ -40,6 +40,9 @@ function updateHud() {
   else if (winner === 0) {
     status.innerText = 'Velha'
   }
+  else if (scoreSelected === '?') {
+    status.innerText = '???????'
+  }
   else if (scoreSelected === 0) {
     status.innerText = 'Empatado'
   }
@@ -52,13 +55,4 @@ function updateHud() {
   else if (scoreSelected === Infinity || scoreSelected === - Infinity) {
     status.innerText = 'Vai dar velha'
   }
-}
-
-function restarGame() {
-  currentPlayer = 1 // X
-  grid = newGrid(gridSize)
-  scoresRequired = true
-  scoresToBeCalculated = Infinity
-  scoresCalculated = []
-  winner = null
 }

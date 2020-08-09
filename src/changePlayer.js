@@ -4,4 +4,9 @@ function changePlayer() {
   scoresCalculated = []
 
   scoresRequired = true
+
+  for (const worker of workers)
+    worker.terminate()
+
+  createWorkers()
 }
