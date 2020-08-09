@@ -63,8 +63,6 @@ onmessage = function (e) {
     return 0
   }
 
-
-
   function heuristic(g) {
     let value = 0
     let counter = 0
@@ -204,6 +202,5 @@ onmessage = function (e) {
     calculations,
     pruning,
     grid: e.data.node
-  }
-  )
+  })
 }
