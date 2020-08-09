@@ -1,11 +1,10 @@
 onmessage = function (e) {
   const gridSize = e.data.gridSize
-  const searchOrder = new Set(e.data.searchOrder)
+  const order = e.data.order
   const sequenceToWin = e.data.sequenceToWin
   let calculations = 0
   let pruning = 0
 
-  console.log(searchOrder)
 
   function max(a, b) {
     if (a > b) return a
@@ -143,10 +142,10 @@ onmessage = function (e) {
     calculations++
 
     const winner = checkWinner(node)
-    // if (winner !== 0) {
-    //   return winner * 10000
-    // }
-    if (depth === 0 || winner !== 0) {
+    if (winner !== 0) {
+      return winner * 10000
+    }
+    if (depth === 0) {
       return heuristic(node)
     }
 
@@ -154,21 +153,21 @@ onmessage = function (e) {
     if (maximizing) {
       let maxValue = -Infinity
 
-      for (const item of searchOrder) {
-        const x = item[0]
-        const y = item[1]
-        if (node[x][y] === 0) {
-          node[x][y] = 1
+      for (let x = 0; x < gridSize; x++) {
+        for (let y = 0; y < gridSize; y++) {
+          if (node[x][y] === 0) {
+            node[x][y] = 1
 
-          const value = alphabeta(node, depth - 1, alpha, beta, false)
-          maxValue = max(maxValue, value)
-          alpha = max(alpha, value)
+            const value = alphabeta(node, depth - 1, alpha, beta, false)
+            maxValue = max(maxValue, value)
+            alpha = max(alpha, value)
 
-          node[x][y] = 0
+            node[x][y] = 0
 
-          if (beta <= alpha) {
-            pruning++
-            return maxValue
+            if (beta <= alpha) {
+              pruning++
+              return maxValue
+            }
           }
         }
       }
@@ -180,25 +179,24 @@ onmessage = function (e) {
     else {
       let minValue = Infinity
 
-      for (const item of searchOrder) {
-        const x = item[0]
-        const y = item[1]
-        if (node[x][y] === 0) {
-          node[x][y] = -1
+      for (let x = 0; x < gridSize; x++) {
+        for (let y = 0; y < gridSize; y++) {
+          if (node[x][y] === 0) {
+            node[x][y] = -1
 
-          const value = alphabeta(node, depth - 1, alpha, beta, true)
-          minValue = min(minValue, value)
-          beta = min(beta, value)
+            const value = alphabeta(node, depth - 1, alpha, beta, true)
+            minValue = min(minValue, value)
+            beta = min(beta, value)
 
-          node[x][y] = 0
+            node[x][y] = 0
 
-          if (beta <= alpha) {
-            pruning++
-            return minValue
+            if (beta <= alpha) {
+              pruning++
+              return minValue
+            }
           }
         }
       }
-
 
       return minValue
     }

@@ -5,6 +5,7 @@ function createWorkers() {
     worker.onmessage = e => {
       console.log(e.data)
       scoresCalculated.push(e.data)
+      finishedCalculateScores = new Date()
     }
 
     workers[i] = worker

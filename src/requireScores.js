@@ -1,5 +1,6 @@
 function requireScores() {
   scoresCalculated = []
+  startedCalculateScores = new Date()
 
   // X -> 1
   if (currentPlayer == 1) {
@@ -15,7 +16,8 @@ function requireScores() {
         depth: initialDepth,
         maximizing: false,
         gridSize,
-        sequenceToWin
+        sequenceToWin,
+        searchOrder
       })
 
       console.log('posted')
@@ -36,7 +38,8 @@ function requireScores() {
         depth: initialDepth,
         maximizing: true,
         gridSize,
-        sequenceToWin
+        sequenceToWin,
+        searchOrder
       })
 
       console.log('posted')
