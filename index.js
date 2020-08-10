@@ -4,7 +4,7 @@ const sequenceToWin = 4
 const barHeight = 10
 let workers = []
 let searchOrder = []
-let initialDepth = 7
+let initialDepth = 3
 let players = [HUMAN, 'VS', TICFISH] // O VS X
 let currentPlayer = 1 // X
 let quadSize = ws / gridSize
@@ -36,6 +36,19 @@ function setup() {
   createWorkers()
 
   searchOrder = createSearchOrder()
+
+  // console.log(ccall('test'))
+
+  // worker.postMessage({
+  //   node: move,
+  //   depth: initialDepth,
+  //   maximizing: true,
+  //   gridSize,
+  //   sequenceToWin,
+  //   searchOrder
+  // })
+
+  console.log(ccall('getScore', 'number', [], [grid, searchOrder, 5, true]))
 }
 
 function draw() {
