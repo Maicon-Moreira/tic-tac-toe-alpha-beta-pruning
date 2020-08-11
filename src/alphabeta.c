@@ -7,8 +7,8 @@ int main() {
     return 0;
 }
 
-int test() {
-    return 123;
+int test(int lista[5][5]) {
+    return lista[1][1];
 }
 
 int getScore(int grid[5][5], int searchOrder[25][2], int depth, int maximizing) {
@@ -21,6 +21,8 @@ int getScore(int grid[5][5], int searchOrder[25][2], int depth, int maximizing) 
 
 int checkWinner(int grid[5][5]) {
     int counter = 0;
+
+    // printf(grid);
 
     int x, y, distance;
     for (x = 0; x < 5; x++) {
