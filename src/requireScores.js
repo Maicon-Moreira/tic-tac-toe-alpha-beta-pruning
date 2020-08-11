@@ -12,6 +12,7 @@ function requireScores() {
       const move = moves[i]
 
       worker.postMessage({
+        grid,
         node: move,
         depth: initialDepth,
         maximizing: false,
@@ -32,6 +33,7 @@ function requireScores() {
       const move = moves[i]
 
       worker.postMessage({
+        grid,
         node: move,
         depth: initialDepth,
         maximizing: true,

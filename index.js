@@ -4,7 +4,7 @@ const sequenceToWin = 4
 const barHeight = 10
 let workers = []
 let searchOrder = []
-let initialDepth = 3
+let initialDepth = 7
 let players = [HUMAN, 'VS', TICFISH] // O VS X
 let currentPlayer = 1 // X
 let quadSize = ws / gridSize
@@ -36,53 +36,6 @@ function setup() {
   createWorkers()
 
   searchOrder = createSearchOrder()
-
-  // console.log(ccall('test'))
-
-  // worker.postMessage({
-  //   node: move,
-  //   depth: initialDepth,
-  //   maximizing: true,
-  //   gridSize,
-  //   sequenceToWin,
-  //   searchOrder
-  // })
-
-  // console.log(ccall('checkWinner', 'number', [], [grid]))
-
-
-
-
-
-
-  const items = [
-    [1, 2, 3, 4, 5],
-    [1, 2, 3, 4, 5],
-    [1, 2, 3, 4, 5],
-    [1, 2, 3, 4, 5],
-    [1, 2, 3, 4, 5]
-  ];
-  const arrayLength = items.length;
-  const bytesPerElement = Module.HEAP32.BYTES_PER_ELEMENT;
-
-  const arrayPointer = Module._malloc((arrayLength * bytesPerElement));
-
-  Module.HEAP32.set(items, (arrayPointer / bytesPerElement));
-
-  const response = Module.ccall('test', null, [], [arrayPointer]);
-
-  Module._free(arrayPointer);
-
-  console.log(response)
-
-
-
-
-
-
-
-
-
 }
 
 function draw() {

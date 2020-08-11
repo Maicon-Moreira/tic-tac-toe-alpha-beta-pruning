@@ -1,9 +1,24 @@
 onmessage = function (e) {
+  const grid = e.data.grid
+  const node = e.data.node
+  const depth = e.data.depth
+  const maximizing = e.data.maximizing
   const gridSize = e.data.gridSize
-  const searchOrder = new Set(e.data.searchOrder)
   const sequenceToWin = e.data.sequenceToWin
+  const searchOrder = new Set(e.data.searchOrder)
+
   let calculations = 0
   let pruning = 0
+
+  let xChange, yChange
+  for (let x = 0; x < gridSize; x++) {
+    for (let y = 0; y < gridSize; y++) {
+      if (grid[x][y] !== node[x][y]) {
+        xChange = x
+        yChange = y
+      }
+    }
+  }
 
   function max(a, b) {
     if (a > b) return a
@@ -15,60 +30,51 @@ onmessage = function (e) {
     else return b
   }
 
-  function checkWinner(g) {
-    let counter = 0
-    for (let x = 0; x < gridSize; x++) {
-      for (let y = 0; y < gridSize; y++) {
-        const player = g[x][y]
-        if (player !== 0) {
-          counter++
+  function checkWinner(g, x, y) {
+    const player = g[x][y]
 
-          // horizontal
-          for (let distance = 1; distance < sequenceToWin; distance++) {
-            if (g[x + distance] && g[x + distance][y] === player) {
-              if (distance === sequenceToWin - 1)
-                return player
-            }
-            else break
-          }
+    if (player !== 0) {
 
-          // vertical
-          for (let distance = 1; distance < sequenceToWin; distance++) {
-            if (g[x] && g[x][y + distance] === player) {
-              if (distance === sequenceToWin - 1)
-                return player
-            }
-            else break
-          }
-
-          // diagonal
-          for (let distance = 1; distance < sequenceToWin; distance++) {
-            if (g[x + distance] && g[x + distance][y + distance] === player) {
-              if (distance === sequenceToWin - 1)
-                return player
-            }
-            else break
-          }
-
-          // anti-diagonal
-          for (let distance = 1; distance < sequenceToWin; distance++) {
-            if (g[x + distance] && g[x + distance][y - distance] === player) {
-              if (distance === sequenceToWin - 1)
-                return player
-            }
-            else break
-          }
-
+      // horizontal
+      for (let distance = 1; distance < sequenceToWin; distance++) {
+        if (g[x + distance] && g[x + distance][y] === player) {
+          if (distance === sequenceToWin - 1)
+            return player
         }
+        else break
       }
+
+      // vertical
+      for (let distance = 1; distance < sequenceToWin; distance++) {
+        if (g[x] && g[x][y + distance] === player) {
+          if (distance === sequenceToWin - 1)
+            return player
+        }
+        else break
+      }
+
+      // diagonal
+      for (let distance = 1; distance < sequenceToWin; distance++) {
+        if (g[x + distance] && g[x + distance][y + distance] === player) {
+          if (distance === sequenceToWin - 1)
+            return player
+        }
+        else break
+      }
+
+      // anti-diagonal
+      for (let distance = 1; distance < sequenceToWin; distance++) {
+        if (g[x + distance] && g[x + distance][y - distance] === player) {
+          if (distance === sequenceToWin - 1)
+            return player
+        }
+        else break
+      }
+
     }
 
-    if (counter === gridSize ** 2) {
-      return 0
-    }
-    else {
-      return null
-    }
+    return 0
+
   }
 
   function heuristic(g) {
@@ -144,14 +150,11 @@ onmessage = function (e) {
     return value
   }
 
-  function alphabeta(node, depth, alpha, beta, maximizing) {
+  function alphabeta(node, depth, alpha, beta, maximizing, xChange, yChange) {
     calculations++
 
-    const winner = checkWinner(node)
-    // if (winner !== 0) {
-    //   return winner * 10000
-    // }
-    if (depth === 0 || winner !== null) {
+    const winner = checkWinner(node, xChange, yChange)
+    if (depth === 0 || winner !== 0) {
       return heuristic(node)
     }
 
@@ -165,7 +168,7 @@ onmessage = function (e) {
         if (node[x][y] === 0) {
           node[x][y] = 1
 
-          const value = alphabeta(node, depth - 1, alpha, beta, false)
+          const value = alphabeta(node, depth - 1, alpha, beta, false, x, y)
           maxValue = max(maxValue, value)
           alpha = max(alpha, value)
 
@@ -191,7 +194,7 @@ onmessage = function (e) {
         if (node[x][y] === 0) {
           node[x][y] = -1
 
-          const value = alphabeta(node, depth - 1, alpha, beta, true)
+          const value = alphabeta(node, depth - 1, alpha, beta, true, x, y)
           minValue = min(minValue, value)
           beta = min(beta, value)
 
@@ -210,9 +213,9 @@ onmessage = function (e) {
 
   postMessage({
     result:
-      alphabeta(e.data.node, e.data.depth - 1, -Infinity, Infinity, e.data.maximizing),
+      alphabeta(node, depth - 1, -Infinity, Infinity, maximizing, xChange, yChange),
     calculations,
     pruning,
-    grid: e.data.node
+    grid: node
   })
 }
