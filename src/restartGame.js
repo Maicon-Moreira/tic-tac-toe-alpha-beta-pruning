@@ -6,4 +6,5 @@ function restartGame() {
   scoresToBeCalculated = Infinity
   scoresCalculated = []
   winner = null
+  searchOrder = createSearchOrder()
 }

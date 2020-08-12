@@ -71,11 +71,25 @@ button {
   margin-top: 30px;
 }
 
-p,
+.players>p,
 .space {
   width: 40px;
 }
 
 a {
   color: aquamarine;
+}
+
+.boardSize {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boardSize>p {
+  margin-right: 10px;
+}
+
+.boardSize>select {
+  width: 50px;
 }

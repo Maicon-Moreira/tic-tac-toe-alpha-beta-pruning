@@ -1,7 +1,7 @@
 const ws = innerHeight > innerWidth ? innerWidth * 0.9 : innerHeight * 0.5
-const gridSize = 5
-const sequenceToWin = 4
 const barHeight = 10
+let gridSize = 5
+let sequenceToWin = 4
 let workers = []
 let searchOrder = []
 let initialDepth = 7
@@ -33,9 +33,7 @@ function setup() {
   textFont(fontBold);
   text('Font Style Bold', 10, 70);
 
-  createWorkers()
-
-  searchOrder = createSearchOrder()
+  restartGame()
 }
 
 function draw() {
